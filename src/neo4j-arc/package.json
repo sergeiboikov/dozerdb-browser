@@ -20,6 +20,14 @@
     "README.md",
     "LICENSE"
   ],
+  "resolutions": {
+    "**/@babel/runtime": "7.26.10",
+    "**/@babel/traverse": "7.23.2",
+    "**/d3-color": "3.1.0",
+    "**/lodash": "4.18.0",
+    "**/lodash-es": "4.18.0",
+    "**/picomatch": "2.3.2"
+  },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.9",
     "@types/react": "^17.0.40",
@@ -50,7 +58,7 @@
     "@types/d3-zoom": "^3.0.1",
     "@types/lodash-es": "^4.17.6",
     "@types/styled-components": "^5.1.1",
-    "d3-color": "^3.0.1",
+    "d3-color": "^3.1.0",
     "d3-drag": "^3.0.0",
     "d3-ease": "^3.0.1",
     "d3-force": "^3.0.0",
@@ -60,7 +68,7 @@
     "d3-transition": "^3.0.1",
     "d3-zoom": "^3.0.0",
     "deepmerge": "^4.2.2",
-    "lodash-es": "^4.17.21",
+    "lodash-es": "^4.18.0",
     "monaco-editor": "0.23.0",
     "re-resizable": "^6.9.9",
     "react-is": "^17.0.2",
