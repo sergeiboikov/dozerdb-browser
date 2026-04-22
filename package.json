@@ -81,7 +81,7 @@
     "**/node-forge": "1.4.0",
     "**/picomatch": "2.3.2",
     "**/prismjs": "1.30.0",
-    "**/protobufjs": "6.11.4",
+    "**/protobufjs": "7.5.5",
     "**/semver": "7.7.2",
     "**/terser": "5.14.2",
     "**/undici": "6.24.0",
