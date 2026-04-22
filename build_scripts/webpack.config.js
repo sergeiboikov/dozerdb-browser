@@ -25,13 +25,10 @@ const helpers = require('./webpack-helpers')
 
 module.exports = {
   mode: helpers.isProduction ? 'production' : 'development',
-  node: {
-    fs: 'empty'
-  },
   entry: [path.resolve(helpers.browserPath, 'index.tsx')],
   output: {
-    filename: 'app-[hash].js',
-    chunkFilename: '[name]-[hash].bundle.js',
+    filename: '[name]-[fullhash].js',
+    chunkFilename: '[name]-[fullhash].bundle.js',
     publicPath: '',
     path: helpers.buildPath,
     globalObject: 'this'
@@ -39,6 +36,9 @@ module.exports = {
   plugins: getPlugins(),
   resolve: {
     symlinks: false,
+    fallback: {
+      fs: false
+    },
     alias: {
       'react-dom': '@hot-loader/react-dom',
       'project-root': path.resolve(__dirname, '../'),
@@ -98,7 +98,7 @@ module.exports = {
   devServer: {
     host: '0.0.0.0',
     port: 8080,
-    disableHostCheck: true,
+    allowedHosts: 'all',
     hot: !helpers.isProduction
   }
 }
