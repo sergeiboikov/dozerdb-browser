@@ -1,8 +1,9 @@
 const isTest = String(process.env.NODE_ENV) === 'test' // Jest sets this
+const isProduction = String(process.env.NODE_ENV) === 'production'
 
 const toExport = {
   plugins: [
-    'react-hot-loader/babel',
+    ...(isProduction ? [] : ['react-hot-loader/babel']),
     '@babel/plugin-proposal-class-properties',
     'babel-plugin-dynamic-import-node'
   ],

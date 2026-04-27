@@ -22,6 +22,11 @@ const path = require('path')
 const getPlugins = require('./webpack-plugins')
 const rules = require('./webpack-rules')
 const helpers = require('./webpack-helpers')
+const rootReactPath = path.resolve(helpers.projectPath, 'node_modules/react')
+const rootReactDomPath = path.resolve(
+  helpers.projectPath,
+  'node_modules/react-dom'
+)
 
 module.exports = {
   mode: helpers.isProduction ? 'production' : 'development',
@@ -40,7 +45,13 @@ module.exports = {
       fs: false
     },
     alias: {
-      'react-dom': '@hot-loader/react-dom',
+      react: rootReactPath,
+      ...(helpers.isProduction
+        ? {}
+        : {
+            'react-dom': '@hot-loader/react-dom'
+          }),
+      ...(helpers.isProduction ? { 'react-dom': rootReactDomPath } : {}),
       'project-root': path.resolve(__dirname, '../'),
       services: path.resolve(helpers.sourcePath, 'shared/services'),
       'browser-services': path.resolve(helpers.browserPath, 'services'),
