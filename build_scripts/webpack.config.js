@@ -22,16 +22,18 @@ const path = require('path')
 const getPlugins = require('./webpack-plugins')
 const rules = require('./webpack-rules')
 const helpers = require('./webpack-helpers')
+const rootReactPath = path.resolve(helpers.projectPath, 'node_modules/react')
+const rootReactDomPath = path.resolve(
+  helpers.projectPath,
+  'node_modules/react-dom'
+)
 
 module.exports = {
   mode: helpers.isProduction ? 'production' : 'development',
-  node: {
-    fs: 'empty'
-  },
   entry: [path.resolve(helpers.browserPath, 'index.tsx')],
   output: {
-    filename: 'app-[hash].js',
-    chunkFilename: '[name]-[hash].bundle.js',
+    filename: '[name]-[fullhash].js',
+    chunkFilename: '[name]-[fullhash].bundle.js',
     publicPath: '',
     path: helpers.buildPath,
     globalObject: 'this'
@@ -39,8 +41,17 @@ module.exports = {
   plugins: getPlugins(),
   resolve: {
     symlinks: false,
+    fallback: {
+      fs: false
+    },
     alias: {
-      'react-dom': '@hot-loader/react-dom',
+      react: rootReactPath,
+      ...(helpers.isProduction
+        ? {}
+        : {
+            'react-dom': '@hot-loader/react-dom'
+          }),
+      ...(helpers.isProduction ? { 'react-dom': rootReactDomPath } : {}),
       'project-root': path.resolve(__dirname, '../'),
       services: path.resolve(helpers.sourcePath, 'shared/services'),
       'browser-services': path.resolve(helpers.browserPath, 'services'),
@@ -98,7 +109,7 @@ module.exports = {
   devServer: {
     host: '0.0.0.0',
     port: 8080,
-    disableHostCheck: true,
+    allowedHosts: 'all',
     hot: !helpers.isProduction
   }
 }

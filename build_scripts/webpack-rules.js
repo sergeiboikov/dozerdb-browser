@@ -32,6 +32,12 @@ const tsLoaderOptions = {
 
 module.exports = [
   {
+    test: /\.m?js$/,
+    resolve: {
+      fullySpecified: false
+    }
+  },
+  {
     test: /\.(ts|tsx)?$/,
     use: {
       loader: 'ts-loader',
@@ -51,23 +57,57 @@ module.exports = [
   {
     test: /\.(png|gif|jpg|svg)$/,
     include: [path.resolve(helpers.browserPath, 'modules')],
-    use: 'file-loader?limit=20480&name=assets/[name]-[hash].[ext]'
+    use: {
+      loader: 'file-loader',
+      options: {
+        limit: 20480,
+        name: 'assets/[name]-[hash].[ext]'
+      }
+    }
   },
   {
     test: /\.woff$/,
-    use: 'file-loader?limit=65000&mimetype=application/font-woff&name=assets/fonts/[name].[ext]'
+    use: {
+      loader: 'file-loader',
+      options: {
+        limit: 65000,
+        mimetype: 'application/font-woff',
+        name: 'assets/fonts/[name]-[contenthash].[ext]'
+      }
+    }
   },
   {
     test: /\.woff2$/,
-    use: 'file-loader?limit=65000&mimetype=application/font-woff2&name=assets/fonts/[name].[ext]'
+    use: {
+      loader: 'file-loader',
+      options: {
+        limit: 65000,
+        mimetype: 'application/font-woff2',
+        name: 'assets/fonts/[name]-[contenthash].[ext]'
+      }
+    }
   },
   {
     test: /\.[ot]tf$/,
-    use: 'file-loader?limit=65000&mimetype=application/octet-stream&name=assets/fonts/[name].[ext]'
+    use: {
+      loader: 'file-loader',
+      options: {
+        limit: 65000,
+        mimetype: 'application/octet-stream',
+        name: 'assets/fonts/[name]-[contenthash].[ext]'
+      }
+    }
   },
   {
     test: /\.eot$/,
-    use: 'file-loader?limit=65000&mimetype=application/vnd.ms-fontobject&name=assets/fonts/[name].[ext]'
+    use: {
+      loader: 'file-loader',
+      options: {
+        limit: 65000,
+        mimetype: 'application/vnd.ms-fontobject',
+        name: 'assets/fonts/[name]-[contenthash].[ext]'
+      }
+    }
   },
   {
     test: /\.less$/, // Carousel
@@ -77,10 +117,12 @@ module.exports = [
       {
         loader: 'css-loader',
         options: {
-          modules: true,
+          modules: {
+            localIdentName: '[local]',
+            exportLocalsConvention: 'camelCase'
+          },
           importLoaders: 1,
-          camelCase: true,
-          localIdentName: '[local]'
+          esModule: false
         }
       },
       'postcss-loader'
@@ -90,6 +132,7 @@ module.exports = [
     test: /\.css$/,
     include: path.resolve(helpers.sourcePath), // css modules for component css files
     exclude: [
+      /node_modules/,
       path.resolve(helpers.browserPath, 'styles'),
       path.resolve(helpers.browserPath, 'modules/Carousel')
     ],
@@ -98,10 +141,12 @@ module.exports = [
       {
         loader: 'css-loader',
         options: {
-          modules: true,
+          modules: {
+            localIdentName: '[name]__[local]___[hash:base64:5]',
+            exportLocalsConvention: 'camelCase'
+          },
           importLoaders: 1,
-          camelCase: 1,
-          localIdentName: '[name]__[local]___[hash:base64:5]'
+          esModule: false
         }
       },
       'postcss-loader'
@@ -117,7 +162,14 @@ module.exports = [
   },
   {
     test: /\.svg$/,
-    use: 'file-loader?limit=65000&mimetype=image/svg+xml&name=assets/fonts/[name].[ext]',
+    use: {
+      loader: 'file-loader',
+      options: {
+        limit: 65000,
+        mimetype: 'image/svg+xml',
+        name: 'assets/fonts/[name]-[contenthash].[ext]'
+      }
+    },
     exclude: [path.resolve(helpers.browserPath, 'components/icons/svgs')]
   },
   {
@@ -127,7 +179,14 @@ module.exports = [
   },
   {
     test: /\.html?$/,
-    use: ['html-loader']
+    use: [
+      {
+        loader: 'html-loader',
+        options: {
+          sources: false
+        }
+      }
+    ]
   },
   {
     test: /boltWorker\.ts/,
@@ -135,7 +194,7 @@ module.exports = [
       {
         loader: 'worker-loader',
         options: {
-          name: 'bolt-worker-[hash].js'
+          filename: 'bolt-worker-[contenthash].js'
         }
       },
       {
